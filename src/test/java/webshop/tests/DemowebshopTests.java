@@ -101,7 +101,6 @@ public class DemowebshopTests extends TestBase {
         System.out.println("Response: " + response.path("updatetopcartsectionhtml"));
     }
 
-
     @Test
     @Tag("API+UI")
     @DisplayName("Проверяем info пользователя")
@@ -145,7 +144,7 @@ public class DemowebshopTests extends TestBase {
                     $(".address-list").$(".email").shouldHave(text("Email: Piter@gmail.com")));
 
             step("Check the phone number", () ->
-                    $(".address-list").$(".phone").shouldHave(text("Phone number: 88009997750x")));
+                    $(".address-list").$(".phone").shouldHave(text("Phone number: 88009997750")));
 
             step("Check the company", () ->
                     $(".address-list").$(".company").shouldHave(text("Piter corp")));

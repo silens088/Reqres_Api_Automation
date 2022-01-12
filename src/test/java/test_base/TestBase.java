@@ -7,8 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-//пробую запустить тесты в аллюр
-//добавил расширение public class DemowebshopTests extends TestBase
+//Это нужно для запуска UI тестов на селеноиде. Как локально, так и через Аллюр.
 
 public class TestBase {
 
