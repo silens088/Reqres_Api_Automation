@@ -1,5 +1,3 @@
-/*
-
 package test_base;
 
 import com.codeborne.selenide.Configuration;
@@ -35,5 +33,3 @@ public class TestBase {
 //        Attach.addVideo();
 //    }
 }
-
- */
