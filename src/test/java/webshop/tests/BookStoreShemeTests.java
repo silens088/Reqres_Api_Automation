@@ -15,6 +15,7 @@ import static org.hamcrest.Matchers.*;
 //1. Добавим либу "io.rest-assured:json-schema-validator:4.3.1"
 //2. в resourses - создаем папку shemes - создаем файл с структурой JSON схемы из response которую конвертнули например из https://www.jsonschema.net/"
 //3. в body импортим спец метод на схему и указываем путь к нашей схеме (.body(matchesJsonSchemaInClasspath("shemes/GenerateTokenSheme.json")))
+//преимущества: возможность разом проверить всю схему ответа на соответствие полей
 
 public class BookStoreShemeTests {
 

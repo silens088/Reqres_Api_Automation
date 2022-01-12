@@ -18,6 +18,10 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
+//АПИ тесты на https://demoqa.com
+//добавлен базовый отчет аллюр
+//добавлен красивый шаблон отчет аллюр
+
 public class BookStoreTests {
 
     @BeforeAll

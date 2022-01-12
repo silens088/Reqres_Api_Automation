@@ -13,6 +13,8 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 import static com.codeborne.selenide.Selenide.*;
 
+
+
 public class DemowebshopTests {
 
     @BeforeAll
