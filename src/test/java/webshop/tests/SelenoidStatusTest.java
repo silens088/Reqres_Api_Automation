@@ -17,7 +17,7 @@ public class SelenoidStatusTest {
     // make request to https://selenoid.autotests.cloud/status
     // response: {"total":20,"used":0,"queued":0,"pending":0,"browsers":{"android":{"8.1":{}},"chrome":{"90.0":{},"91.0":{}},"firefox":{"88.0":{},"89.0":{}},"opera":{"76.0":{},"77.0":{}}}}
 
-    @Feature("Проверяем запрос GET https://selenoid.autotests.cloud/status")
+    //@Feature("Проверяем запрос GET https://selenoid.autotests.cloud/status")
 
     @Test
     @DisplayName("поле total = 20")

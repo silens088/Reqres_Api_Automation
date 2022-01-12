@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 //пробую запустить тесты в аллюр
+//добавил расширение public class DemowebshopTests extends TestBase
 
 public class TestBase {
 
