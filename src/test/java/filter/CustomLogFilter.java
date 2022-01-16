@@ -3,6 +3,7 @@ package filter;
 //1. Этот фильтра расширяет наши логи (AllureListener) в более красивый вид. у19 - 1.05
 //2. Мы создаем в resources - folder ftl - и создать 2 файла: request.ftl | response.ftl (копипастим)
 //3. Получаем красивый лог в аллюр отчете.
+//используем без изменений
 
 import io.qameta.allure.restassured.AllureRestAssured;
 
