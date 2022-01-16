@@ -5,7 +5,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.Cookie;
-import test_base.TestBase;
+import test_base.UiTestBase;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
@@ -14,7 +14,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 import static com.codeborne.selenide.Selenide.*;
 
-public class DemowebshopTests extends TestBase {
+public class DemowebshopTests extends UiTestBase {
 
     @BeforeAll
     static void setUp() {

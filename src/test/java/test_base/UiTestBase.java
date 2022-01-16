@@ -2,15 +2,15 @@ package test_base;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
+import helpers.Attach;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-//Это нужно для запуска UI тестов на селеноиде. Как локально, так и через Аллюр.
+public class UiTestBase {
 
-public class TestBase {
-
+    //Это нужно для запуска UI тестов на селеноиде. Как локально, так и через Аллюр.
     @BeforeAll
     static void setup() {
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
@@ -24,11 +24,12 @@ public class TestBase {
         Configuration.browserCapabilities = capabilities;
     }
 
-//    @AfterEach
-//    public void tearDown() {
-//        Attach.screenshotAs("Last screenshot");
-//        Attach.pageSource();
-//        Attach.browserConsoleLogs();
-//        Attach.addVideo();
-//    }
+    //helpers.attach - включаем запись скринов, видео, логов в отчет аллюр
+    @AfterEach
+    public void tearDown() {
+        Attach.screenshotAs("Last screenshot");
+        Attach.pageSource();
+        Attach.browserConsoleLogs();
+        Attach.addVideo();
+    }
 }

@@ -1,4 +1,4 @@
-package webshop.tests;
+package tests;
 
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
@@ -14,6 +14,7 @@ import java.util.Map;
 import static filter.CustomLogFilter.customLogFilter;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.requestSpecification;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -22,7 +23,7 @@ import static org.hamcrest.Matchers.is;
 //добавлен базовый отчет аллюр
 //добавлен красивый шаблон отчет аллюр
 
-public class BookStoreTests {
+public class BookStoreApiTests {
 
     @BeforeAll
     static void setUp() {
@@ -30,22 +31,17 @@ public class BookStoreTests {
     }
 
     @Test
-    @Tag("API")
-    void withAllLogsTest() {
-        step("Пример теста с выводом логов", () -> {
-            given()
-                    .log().all()
-//                .log().uri()
-//                .log().body()
-                    .get("/BookStore/v1/Books")
-                    .then()
-                    .log().all()
-                    .body("books", hasSize(greaterThan(0)));
-        });
+    @DisplayName("Получить список книг")
+    void getListBooks() {
+        given(requestSpecification)
+                .get("/BookStore/v1/Books")
+                .then()
+                .statusCode(200)
+                .log().all()
+                .body("books", hasSize(greaterThan(0)));
     }
 
     @Test
-    @Tag("API")
     void authorizeTest() {
 
         Map<String, String> data = new HashMap<>();
