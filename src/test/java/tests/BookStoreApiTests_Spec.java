@@ -56,7 +56,6 @@ public class BookStoreApiTests_Spec extends BookStoreApiSpec {
     }
 
 
-
     @Test
     @Tag("POST")
     @DisplayName("Тест на авторизацию + спецификация")
