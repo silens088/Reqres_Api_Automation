@@ -1,11 +1,13 @@
 package tests.reqres;
 
 import TestBase.Specification.ApiRequestSpecification;
-import com.codeborne.selenide.Configuration;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Story;
 import io.restassured.RestAssured;
+import lombok_models.reqres.ForLoginRequest;
+import lombok_models.reqres.ForLoginResponse;
+import lombok_models.reqres.OneModelTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -14,18 +16,19 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
-import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Owner("velichko")
 @Story("https://reqres.in")
 @Feature("https://reqres.in")
 
-public class ReqresTests extends ApiRequestSpecification {
+public class ReqresTests_lombok extends ApiRequestSpecification {
 
     @BeforeAll
     static void setUp() {
@@ -37,18 +40,49 @@ public class ReqresTests extends ApiRequestSpecification {
     @DisplayName("Проверяем успешный логин")
     void successfullLogin() {
 
-        Map<String, String> data = new HashMap<>();
-        data.put("email", "eve.holt@tests.reqres.in");
-        data.put("password", "cityslicka");
+        ForLoginRequest forLogin = new ForLoginRequest(); //создали обьект модели lombok
+        forLogin.setEmail("eve.holt@reqres.in");
+        forLogin.setPassword("cityslicka");
 
-        given()
-                .spec(requestReqresSpec)
-                .body(data)
-                .when()
-                .post("/api/login")
-                .then()
-                .statusCode(201);
+        step("проверяем успешный логин", () -> {
+            ForLoginResponse loginResponse =
+                    given()
+                            .spec(requestReqresSpec)
+                            .body(forLogin)
+                            .when()
+                            .post("/api/login")
+                            .then()
+                            .statusCode(200)
+                            .extract().as(ForLoginResponse.class);
+
+            assertEquals("QpwL5tke4Pnpja7X4", loginResponse.getToken());
+        });
     }
+
+    @Test
+    @Tag("POST")
+    @DisplayName("Проверяем что забыли ввести пароль")
+    void unSuccessfullLogin() {
+
+        ForLoginRequest forLogin = new ForLoginRequest();
+        forLogin.setEmail("eve.holt@reqres.in");
+
+        step("Проверяем ошибку, что забыли ввести пароль", () -> {
+            ForLoginResponse loginResponse =
+                    given()
+                            .spec(requestReqresSpec)
+                            .body(forLogin)
+                            .when()
+                            .post("/api/login")
+                            .then()
+                            .statusCode(400)
+                            .extract().as(ForLoginResponse.class);
+
+            assertEquals("Missing password", loginResponse.getError());
+        });
+    }
+
+    //добавить тесты на регистрацию успешную и нет
 
     @Test
     @Tag("POST")
