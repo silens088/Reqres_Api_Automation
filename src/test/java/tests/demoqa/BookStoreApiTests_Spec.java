@@ -1,11 +1,11 @@
-package tests;
+package tests.demoqa;
 
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import test_base.BookStoreApiSpec;
+import TestBase.Specification.ApiRequestSpecification;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,18 +17,14 @@ import static org.hamcrest.Matchers.*;
 //добавлен шаблон отчета аллюр customLogFilter().withCustomTemplates()
 //Добавлена спецификация BookStoreApiSpec в тесты
 
-public class BookStoreApiTests_Spec extends BookStoreApiSpec {
+public class BookStoreApiTests_Spec extends ApiRequestSpecification {
 
-    @BeforeAll
-    static void setUp() {
-        RestAssured.baseURI = "https://demoqa.com";
-    }
 
     @Test
     @Tag("GET")
-    @DisplayName("Получить список книг + спецификация")
+    @DisplayName("Получить список книг")
     void getListBooks() {
-        given(requestSpecification)
+        given(requestDemoqaSpec)
                 .get("/BookStore/v1/Books")
                 .then()
                 .spec(responseSpecification)
@@ -42,9 +38,9 @@ public class BookStoreApiTests_Spec extends BookStoreApiSpec {
 
     @Test
     @Tag("GET")
-    @DisplayName("Получить книгу и проверить поля + спецификация")
+    @DisplayName("Получить книгу и проверить поля")
     void getOneBook() {
-        given(requestSpecification)
+        given(requestDemoqaSpec)
                 .get("https://demoqa.com/BookStore/v1/Book?ISBN=9781449325862")
                 .then()
                 .spec(responseSpecification)
@@ -55,10 +51,9 @@ public class BookStoreApiTests_Spec extends BookStoreApiSpec {
                 .log().all();
     }
 
-
     @Test
     @Tag("POST")
-    @DisplayName("Тест на авторизацию + спецификация")
+    @DisplayName("Тест на авторизацию")
     void authorizeTest() {
 
         Map<String, String> userLoginData = new HashMap<>();
@@ -66,7 +61,7 @@ public class BookStoreApiTests_Spec extends BookStoreApiSpec {
         userLoginData.put("password", "asdsad#frew_DFS2");
 
         given()
-                .spec(requestSpecification)
+                .spec(requestDemoqaSpec)
                 .body(userLoginData)
                 .post("/Account/v1/GenerateToken")
                 .then()

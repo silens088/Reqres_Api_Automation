@@ -1,4 +1,4 @@
-package tests;
+package tests.demoqa;
 
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
@@ -19,11 +19,7 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
-//АПИ тесты на https://demoqa.com
-//добавлен базовый отчет аллюр
-//добавлен красивый шаблон отчет аллюр
-
-public class BookStoreApiTests {
+public class BookStoreApiTests_noSpec {
 
     @BeforeAll
     static void setUp() {

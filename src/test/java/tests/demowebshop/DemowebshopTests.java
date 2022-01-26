@@ -1,11 +1,11 @@
-package webshop.tests;
+package tests.demowebshop;
 
 import com.codeborne.selenide.*;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.Cookie;
-import test_base.UiTestBase;
+import TestBase.UiTestBase;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;

@@ -1,11 +1,18 @@
-package webshop.tests;
+package tests.reqres;
 
+import TestBase.Specification.ApiRequestSpecification;
+import com.codeborne.selenide.Configuration;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Owner;
+import io.qameta.allure.Story;
 import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
@@ -14,35 +21,45 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 
-public class ReqresTests {
+@Owner("velichko")
+@Story("https://reqres.in")
+@Feature("https://reqres.in")
+
+public class ReqresTests extends ApiRequestSpecification {
 
     @BeforeAll
     static void setUp() {
-        RestAssured.baseURI = "https://reqres.in/";
+        RestAssured.baseURI = "https://reqres.in";
     }
 
     @Test
+    @Tag("POST")
+    @DisplayName("Проверяем успешный логин")
     void successfullLogin() {
 
-        String data = "{ \"email\": \"eve.holt@reqres.in\", \"password\": \"cityslicka\" }";
+        Map<String, String> data = new HashMap<>();
+        data.put("email", "eve.holt@tests.reqres.in");
+        data.put("password", "cityslicka");
 
         given()
-                .contentType(JSON) //важно указывать контент тайп!
+                .spec(requestReqresSpec)
                 .body(data)
                 .when()
                 .post("/api/login")
                 .then()
-                .statusCode(200)
-                .body("token", is("QpwL5tke4Pnpja7X4"));
+                .statusCode(201);
     }
 
     @Test
+    @Tag("POST")
+    @DisplayName("Проверяем ошибку, если пароль не введен")
     void negativeLogin() {
 
-        String data = "{ \"email\": \"eve.holt@reqres.in\"  }";
+        Map<String, String> data = new HashMap<>();
+        data.put("email", "eve.holt@tests.reqres.in");
 
         given()
-                .contentType(JSON) //важно указывать контент тайп!
+                .spec(requestReqresSpec)
                 .body(data)
                 .when()
                 .post("/api/login")
@@ -55,7 +72,8 @@ public class ReqresTests {
     @Tag("GET")
     @DisplayName("Проверяем содержимое поля support.text")
     void getSingleUsers() {
-
+        given()
+                .spec(requestReqresSpec);
         String response =
                 get("/api/users/2")
                         .then()
@@ -67,11 +85,11 @@ public class ReqresTests {
 
     @Test
     @Tag("GET")
-    @DisplayName("пользователь не найден")
+    @DisplayName("Проверяем что пользователь не найден")
     void singleUserNotFoundTest() {
 
         given()
-                .contentType(JSON)
+                .spec(requestReqresSpec)
                 .when()
                 .get("/api/users/23")
                 .then()
@@ -84,10 +102,11 @@ public class ReqresTests {
     void getListUsers() {
 
         given()
+                .spec(requestReqresSpec)
                 .when()
                 .get("/api/users?page=2")
                 .then()
-                .statusCode(200)
+                .spec(responseSpecification)
                 .body("page", is(2))
                 .body("total_pages", is(2))
                 .assertThat().statusCode(200);
@@ -98,15 +117,19 @@ public class ReqresTests {
     @DisplayName("создаем пользователя morpheus")
     void postCreateUser() {
 
-        String data = "{ \"name\": \"morpheus\", \"job\": \"leader\" }";
+        Map<String, String> data = new HashMap<>();
+        data.put("name", "morpheus");
+        data.put("job", "leader");
 
         given()
-                .contentType(JSON)
+                .spec(requestReqresSpec)
                 .body(data)
                 .when()
                 .post("/api/users")
                 .then()
                 .statusCode(201)
-                .body("name", is("morpheus"), "job", is("leader"), "id", notNullValue());
+                .body("name", is("morpheus"))
+                .body("job", is("leader"))
+                .body("id", notNullValue());
     }
 }
