@@ -7,18 +7,16 @@ import io.qameta.allure.Story;
 import io.restassured.RestAssured;
 import lombok_models.reqres.*;
 import lombok_models.reqres.ForSingleResource.Response.SingleResourceMain;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static io.qameta.allure.Allure.step;
-import static io.restassured.RestAssured.get;
-import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -262,5 +260,51 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
                 .body("total_pages", is(2))
                 .assertThat()
                 .statusCode(200);
+    }
+
+    //тест позволяет с помощью регекса, найти и проверить конкретные данные в ответе:
+    @Test
+    @Tag("GET")
+    @DisplayName("Экспериментальный тест с Groovy1 + regex")
+    public void checkNameInListResource() {
+        step("Проверяем что LIST <RESOURCE> содержит в середине имени ue  ", () -> {
+            given()
+                    .spec(requestReqresSpec)
+                    .when()
+                    .get("/api/unknown")
+                    .then()
+                    .log().all()
+                    .statusCode(200)
+                    //ищем имена
+                    .body("data.findAll{it.name =~/ue/}.name.flatten()",
+                            hasItems("true red", "blue turquoise"))
+                    .and()
+                    //ищем года с 200
+                    .body("data.findAll{it.year =~/200/}.year.flatten()",
+                            hasItems(2001, 2003));
+        });
+    }
+
+    //example
+    @Test
+    @Tag("GET")
+    @DisplayName("Экспериментальный тест с Groovy2 + regex")
+    public void checkNameInListResource2() {
+        step("Проверяем что LIST USERS стр1 - содержит емейл eve.holt@reqres.in", () -> {
+            given()
+                    .spec(requestReqresSpec)
+                    .when()
+                    .get("/api/users?page=1")
+                    .then()
+                    .log().all()
+                    .statusCode(200)
+
+                    //найти все емейлы - которые неважно с чего начинаются - но заканчивается reqres.in
+                    //- он собирает весь список всех емейлов: findAll{it.email =~/.*?@reqres.in/}
+                    //- находит поле .email - flatten() ??? хз что это
+                    //далее в получившемся списке находим hasItem - наш емейл: eve.holt@reqres.in
+                    .body("data.findAll{it.email =~/.*?@reqres.in/}.email.flatten()",
+                            hasItem("eve.holt@reqres.in"));
+        });
     }
 }
