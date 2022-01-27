@@ -5,9 +5,8 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Story;
 import io.restassured.RestAssured;
-import lombok_models.reqres.ForLoginRequest;
-import lombok_models.reqres.ForLoginResponse;
-import lombok_models.reqres.OneModelTest;
+import lombok_models.reqres.*;
+import lombok_models.reqres.ForSingleResource.Response.SingleResourceMain;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -20,9 +19,11 @@ import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+//здесь используем lombok + restassured.specification + allure.restassured_filter
 
 @Owner("velichko")
 @Story("https://reqres.in")
@@ -61,7 +62,7 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
 
     @Test
     @Tag("POST")
-    @DisplayName("Проверяем что забыли ввести пароль")
+    @DisplayName("Проверяем ошибку, если пароль не введен")
     void unSuccessfullLogin() {
 
         ForLoginRequest forLogin = new ForLoginRequest();
@@ -82,8 +83,87 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
         });
     }
 
-    //добавить тесты на регистрацию успешную и нет
+    @Test
+    @Tag("POST")
+    @DisplayName("Успешная регистрация пользователя")
+    void successfulRegistrationUser() {
 
+        ForRegistrationUserRequest request = new ForRegistrationUserRequest();
+        request.setEmail("eve.holt@reqres.in");
+        request.setPassword("pistol");
+
+        step("Регистрируем пользователя", () -> {
+            ForRegistrationUserResponse response =
+                    given()
+                            .spec(requestReqresSpec)
+                            .body(request)
+                            .when()
+                            .post("/api/register")
+                            .then()
+                            .statusCode(200)
+                            .extract().as(ForRegistrationUserResponse.class);
+
+            assertEquals("4", response.getId());
+            assertEquals("QpwL5tke4Pnpja7X4", response.getToken());
+        });
+    }
+
+    @Test
+    @Tag("POST")
+    @DisplayName("Не успешная регистрация пользователя")
+    void usSuccessfulRegistrationUser() {
+
+        ForRegistrationUserRequest request = new ForRegistrationUserRequest();
+        request.setEmail("eve.holt@reqres.in");
+
+        String expectedError = "Missing password";
+
+        step("Регистрируем пользователя", () -> {
+            ForRegistrationUserResponse response =
+                    given()
+                            .spec(requestReqresSpec)
+                            .body(request)
+                            .when()
+                            .post("/api/register")
+                            .then()
+                            .statusCode(400)
+                            .extract().as(ForRegistrationUserResponse.class);
+
+            assertEquals(expectedError, response.getError());
+        });
+    }
+
+    @Test
+    @Tag("POST")
+    @DisplayName("Cоздаем пользователя morpheus")
+    void postCreateUser() {
+        ForUsersCreateRequest createRequest = new ForUsersCreateRequest();
+        createRequest.setJob("leader");
+        createRequest.setName("morpheus");
+
+        String expectedName = "morpheus";
+        String expectedJob = "leader";
+
+        step("Проверяем создание пользователя", () -> {
+            ForUsersCreateResponse createResponse =
+                    given()
+                            .spec(requestReqresSpec)
+                            .body(createRequest)
+                            .when()
+                            .post("/api/users")
+                            .then()
+                            .statusCode(201)
+                            .extract().as(ForUsersCreateResponse.class);
+
+            assertEquals(expectedName, createResponse.getName());
+            assertEquals(expectedJob, createResponse.getJob());
+            assertNotNull(createResponse.getId());
+            assertNotNull(createResponse.getCreatedAt());
+            System.out.println(createResponse);
+        });
+    }
+
+    //упрощенно
     @Test
     @Tag("POST")
     @DisplayName("Проверяем ошибку, если пароль не введен")
@@ -102,6 +182,42 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
                 .body("error", is("Missing password"));
     }
 
+    //(C) жир
+    @Test
+    @Tag("GET")
+    @DisplayName("Получаем ресурсы, данные через GET")
+    void singleResource() {
+
+        int expectedId = 2;
+        String expectedName = "fuchsia rose";
+        int expectedYear = 2001;
+        String expectedColor = "#C74375";
+        String expectedPantoneValue = "17-2031";
+        String expectedUrl = "https://reqres.in/#support-heading";
+        String expectedText = "To keep ReqRes free, contributions towards server costs are appreciated!";
+
+        step("Проверяем получение ресурсов", () -> {
+            SingleResourceMain singleResourceMain =
+                    given()
+                            .spec(requestReqresSpec)
+                            .when()
+                            .get("/api/unknown/2")
+                            .then()
+                            .spec(responseSpecification)
+                            .statusCode(200)
+                            .extract().as(SingleResourceMain.class);
+
+            assertEquals(expectedId, singleResourceMain.getData().getId());
+            assertEquals(expectedName, singleResourceMain.getData().getName());
+            assertEquals(expectedYear, singleResourceMain.getData().getYear());
+            assertEquals(expectedColor, singleResourceMain.getData().getColor());
+            assertEquals(expectedPantoneValue, singleResourceMain.getData().getPantoneValue());
+            assertEquals(expectedUrl, singleResourceMain.getSupport().getUrl());
+            assertEquals(expectedText, singleResourceMain.getSupport().getText());
+        });
+    }
+
+    //устаревший
     @Test
     @Tag("GET")
     @DisplayName("Проверяем содержимое поля support.text")
@@ -127,7 +243,8 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
                 .when()
                 .get("/api/users/23")
                 .then()
-                .statusCode(404);
+                .statusCode(404)
+                .body(is("{}"));
     }
 
     @Test
@@ -143,27 +260,7 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
                 .spec(responseSpecification)
                 .body("page", is(2))
                 .body("total_pages", is(2))
-                .assertThat().statusCode(200);
-    }
-
-    @Test
-    @Tag("POST")
-    @DisplayName("создаем пользователя morpheus")
-    void postCreateUser() {
-
-        Map<String, String> data = new HashMap<>();
-        data.put("name", "morpheus");
-        data.put("job", "leader");
-
-        given()
-                .spec(requestReqresSpec)
-                .body(data)
-                .when()
-                .post("/api/users")
-                .then()
-                .statusCode(201)
-                .body("name", is("morpheus"))
-                .body("job", is("leader"))
-                .body("id", notNullValue());
+                .assertThat()
+                .statusCode(200);
     }
 }

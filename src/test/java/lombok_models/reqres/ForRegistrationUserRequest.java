@@ -5,11 +5,7 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OneModelTest {
-
+public class ForRegistrationUserRequest {
     private String email;
     private String password;
-
-    private String token;
-    private String error;
 }
