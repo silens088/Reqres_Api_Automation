@@ -1,12 +1,18 @@
 package tests.reqres;
 
 import TestBase.Specification.ApiRequestSpecification;
+import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Story;
 import io.restassured.RestAssured;
-import lombok_models.reqres.*;
+import lombok_models.reqres.ForLogin.ForLoginRequest;
+import lombok_models.reqres.ForLogin.ForLoginResponse;
+import lombok_models.reqres.ForRegistration.ForRegistrationUserRequest;
+import lombok_models.reqres.ForRegistration.ForRegistrationUserResponse;
 import lombok_models.reqres.ForSingleResource.Response.SingleResourceMain;
+import lombok_models.reqres.ForUsers.ForUsersCreateRequest;
+import lombok_models.reqres.ForUsers.ForUsersCreateResponse;
 import org.junit.jupiter.api.*;
 
 import java.util.HashMap;
@@ -21,7 +27,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-//здесь используем lombok + restassured.specification + allure.restassured_filter
+//lombok, restassured.specification, allure.restassured_filter
 
 @Owner("velichko")
 @Story("https://reqres.in")
@@ -108,6 +114,7 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
 
     @Test
     @Tag("POST")
+    @Description("В этом тесте мы не отправляем пароль и проверяем текст ответа")
     @DisplayName("Не успешная регистрация пользователя")
     void usSuccessfulRegistrationUser() {
 
@@ -183,6 +190,7 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
     //(C) жир
     @Test
     @Tag("GET")
+    @Description("Проверяем что полученные данные, соответствуют ожидаемым")
     @DisplayName("Получаем ресурсы, данные через GET")
     void singleResource() {
 
@@ -235,7 +243,6 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
     @Tag("GET")
     @DisplayName("Проверяем что пользователь не найден")
     void singleUserNotFoundTest() {
-
         given()
                 .spec(requestReqresSpec)
                 .when()
@@ -247,9 +254,8 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
 
     @Test
     @Tag("GET")
-    @DisplayName("Проверяем кол-во страниц и текущую страницу")
+    @DisplayName("Проверяем кол-во страниц и номер текущей страницы")
     void getListUsers() {
-
         given()
                 .spec(requestReqresSpec)
                 .when()
@@ -265,6 +271,7 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
     //тест позволяет с помощью регекса, найти и проверить конкретные данные в ответе:
     @Test
     @Tag("GET")
+    @Description("Ищем все имена содержащие ue и проверяем наличие в списке избранных имен")
     @DisplayName("Экспериментальный тест с Groovy1 + regex")
     public void checkNameInListResource() {
         step("Проверяем что LIST <RESOURCE> содержит в середине имени ue  ", () -> {
@@ -275,12 +282,10 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
                     .then()
                     .log().all()
                     .statusCode(200)
-                    //ищем имена
-                    .body("data.findAll{it.name =~/ue/}.name.flatten()",
+                    .body("data.findAll{it.name =~/ue/}.name.flatten()", //ищем имена
                             hasItems("true red", "blue turquoise"))
                     .and()
-                    //ищем года с 200
-                    .body("data.findAll{it.year =~/200/}.year.flatten()",
+                    .body("data.findAll{it.year =~/200/}.year.flatten()", //ищем года с 200
                             hasItems(2001, 2003));
         });
     }
@@ -288,6 +293,7 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
     //example
     @Test
     @Tag("GET")
+    @Description("Ищем все email оканчивающиеся на @reqres.in и проверяем наличие в списке eve.holt@reqres.in")
     @DisplayName("Экспериментальный тест с Groovy2 + regex")
     public void checkNameInListResource2() {
         step("Проверяем что LIST USERS стр1 - содержит емейл eve.holt@reqres.in", () -> {
@@ -298,7 +304,6 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
                     .then()
                     .log().all()
                     .statusCode(200)
-
                     //найти все емейлы - которые неважно с чего начинаются - но заканчивается reqres.in
                     //- он собирает весь список всех емейлов: findAll{it.email =~/.*?@reqres.in/}
                     //- находит поле .email - flatten() ??? хз что это

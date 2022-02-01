@@ -8,7 +8,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-
 public class UiTestBase {
 
     //Это нужно для запуска UI тестов на селеноиде. Как локально, так и через Аллюр.

@@ -1,10 +1,9 @@
 package filter;
 
-//1. Этот фильтра расширяет наши логи (AllureListener) в более красивый вид. у19 - 1.05
-//2. Мы создаем в resources - folder ftl - и создать 2 файла: request.ftl | response.ftl (копипастим)
+//1. Этот фильтра расширяет наши логи Allure, в более красивый вид.
+//2. Мы создаем в resources - folder ftl - и создать 2 файла: request.ftl | response.ftl (структура)
 //3. Добавляем в тесты после: given()  .filter(customLogFilter().withCustomTemplates())
 //4. Получаем красивый лог в аллюр отчете.
-//используем без изменений
 
 import io.qameta.allure.restassured.AllureRestAssured;
 
@@ -22,7 +21,6 @@ public class CustomLogFilter {
         FILTER.setRequestTemplate("request.ftl");
         FILTER.setResponseTemplate("response.ftl");
         return FILTER;
-
     }
 
     private static class InitLogFilter {

@@ -13,14 +13,6 @@ import static io.restassured.RestAssured.with;
 
 public class ApiRequestSpecification {
 
-    public static RequestSpecification requestDemoqaSpec = with()
-            .baseUri("https://demoqa.com")
-            .filter(customLogFilter().withCustomTemplates()) //шаблон аллюр (фильтр, шаблон tpl)
-            .log().all()
-            .contentType(ContentType.JSON);
-            //.contentType("application/json")
-            //.accept("application/json");
-
     public static RequestSpecification requestReqresSpec = with()
             .baseUri("https://reqres.in")
             //.basePath("/api")
