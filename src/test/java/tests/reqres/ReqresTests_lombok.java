@@ -42,7 +42,7 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
 
     @Test
     @Tag("POST")
-    @DisplayName("Проверяем успешный логин")
+    @DisplayName("Авторизация пользователя")
     void successfullLogin() {
 
         ForLoginRequest forLogin = new ForLoginRequest(); //создали обьект модели lombok
@@ -115,7 +115,7 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
     @Test
     @Tag("POST")
     @Description("В этом тесте мы не отправляем пароль и проверяем текст ответа")
-    @DisplayName("Не успешная регистрация пользователя")
+    @DisplayName("Неуспешная регистрация пользователя")
     void usSuccessfulRegistrationUser() {
 
         ForRegistrationUserRequest request = new ForRegistrationUserRequest();
@@ -168,9 +168,10 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
         });
     }
 
-    //упрощенно
+    @Disabled
     @Test
     @Tag("POST")
+    @Description("Демонстрация выключеного теста")
     @DisplayName("Проверяем ошибку, если пароль не введен")
     void negativeLogin() {
 
@@ -187,7 +188,25 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
                 .body("error", is("Missing password"));
     }
 
-    //(C) жир
+    @Test
+    @Description("Демонстрация упавшего теста")
+    @DisplayName("Тест упал, неверный статус код")
+    @Tag("POST")
+    void negativeLoginNegative() {
+
+        Map<String, String> data = new HashMap<>();
+        data.put("email", "eve.holt@tests.reqres.in");
+
+        given()
+                .spec(requestReqresSpec)
+                .body(data)
+                .when()
+                .post("/api/login")
+                .then()
+                .statusCode(201)
+                .body("error", is("Missing password"));
+    }
+
     @Test
     @Tag("GET")
     @Description("Проверяем что полученные данные, соответствуют ожидаемым")
@@ -223,7 +242,6 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
         });
     }
 
-    //устаревший
     @Test
     @Tag("GET")
     @DisplayName("Проверяем содержимое поля support.text")
@@ -271,8 +289,8 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
     //тест позволяет с помощью регекса, найти и проверить конкретные данные в ответе:
     @Test
     @Tag("GET")
-    @Description("Ищем все имена содержащие ue и проверяем наличие в списке избранных имен")
-    @DisplayName("Экспериментальный тест с Groovy1 + regex")
+    @Description( "Экспериментальный тест с Groovy + regex")
+    @DisplayName("Ищем все имена содержащие ue")
     public void checkNameInListResource() {
         step("Проверяем что LIST <RESOURCE> содержит в середине имени ue  ", () -> {
             given()
@@ -293,8 +311,8 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
     //example
     @Test
     @Tag("GET")
-    @Description("Ищем все email оканчивающиеся на @reqres.in и проверяем наличие в списке eve.holt@reqres.in")
-    @DisplayName("Экспериментальный тест с Groovy2 + regex")
+    @Description("Экспериментальный тест с Groovy + regex")
+    @DisplayName("Ищем все email оканчивающиеся на @reqres.in и проверяем наличие в списке eve.holt@reqres.in")
     public void checkNameInListResource2() {
         step("Проверяем что LIST USERS стр1 - содержит емейл eve.holt@reqres.in", () -> {
             given()
