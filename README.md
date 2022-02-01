@@ -3,7 +3,6 @@
 Project contains Api tests for https://reqres.in/ site.
 These are the tests which check these handlers' functionality.
 
----
 
 ## Technology used:
 
