@@ -6,9 +6,9 @@ These are the tests which check these handlers' functionality.
 
 ## Technology used:
 
-| Java | Rest Assured | Gradle | Lombok | Junit5 | Jenkins |
-|:------:|:----:|:------:|:------:|:------:|:--------:|
-| ![Java](src/images/icons/Java.png) | ![Rest-Assured](src/images/icons/Rest-Assured.png) | ![Gradle](src/images/icons/Gradle.png) | ![Lombok](src/images/icons/Lombok.png) | ![JUnit5](src/images/icons/JUnit5.png) | ![Jenkins](src/images/icons/Jenkins.png) |
+| Java | Rest Assured | Gradle | Lombok | Junit5 | Jenkins | Telegram |
+|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
+| ![Java](src/images/icons/Java.png) | ![Rest-Assured](src/images/icons/Rest-Assured.png) | ![Gradle](src/images/icons/Gradle.png) | ![Lombok](src/images/icons/Lombok.png) | ![JUnit5](src/images/icons/JUnit5.png) | ![Jenkins](src/images/icons/Jenkins.png) | ![Telegram](src/images/icons/Telegram.png) |
 
 [comment]: <> (## Используемые технологии и инструменты)
 
@@ -76,3 +76,13 @@ gradle clean test
 Each test has request and response attached
 
 ![allure report](src/images/reports/AllureReport001.png)
+
+
+### Telegram report
+
+Each test builds sent report into telegram bot
+
+![](src/images/reports/TelegramReport001.png)
+
+
+
