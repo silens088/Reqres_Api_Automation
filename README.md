@@ -41,12 +41,19 @@ These are the tests which check these handlers' functionality.
 [comment]: <> (![Lombok]&#40;src/images/icons/Lombok.png&#41;)
 
 
+## Параметры запуска
+Run locally - If you've downloaded these tests to your computer, run them with the following command:
+```bash
+gradle clean test
+```
 
-## Allure TestOps
+## Смотри отчеты о прохождении тестов в Allure report
+
+![allure report](src/images/reports/AllureReport001.png)
+
+## Храни документацию в Allure TestOps
 
 Click <a target="_blank" href="https://allure.autotests.cloud/project/948/dashboards">here</a> to see a list of automated test cases.
-
-Here are the test cases: 
 
 ![](src/images/reports/AllureTestOps001.png)
 
@@ -54,35 +61,24 @@ Test launch overview:
 
 ![](src/images/reports/AllureTestOps002.png)
 
+## Интеграция с Jira
 
+![](src/images/reports/Jira001.png)
 
-## Run tests - Jenkins job
+## Запускай тесты удаленно через - Jenkins job!
 
 Jenkins is a tool from where you can run the tests. 
 Click <a target="_blank" href="https://jenkins.autotests.cloud/job/009-Vitalii-ReqresApi/">here</a> to do that.
 
 ![](src/images/reports/Jenkins001.png)
 
-### Run locally
 
-If you've downloaded these tests to your computer, run them with the following command:
-```bash
-gradle clean test
-```
-
-
-### Allure report
-
-Each test has request and response attached
-
-![allure report](src/images/reports/AllureReport001.png)
-
-
-### Telegram report
+## Получай оповещение о прохождении тестов прямо в Telegram!
 
 Each test builds sent report into telegram bot
 
 ![](src/images/reports/TelegramReport001.png)
+
 
 
 
