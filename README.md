@@ -1,4 +1,4 @@
-![](src/images/main_logo.png)
+![](images/main_logo.png)
 
 # API automation project для сайта [reqres.in](https://reqres.in/)
 
@@ -7,7 +7,7 @@
 
 | Java | Rest Assured | Gradle | Lombok | Junit5 | Jenkins | Telegram |
 |:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
-| ![Java](src/images/icons/Java.png) | ![Rest-Assured](src/images/icons/Rest-Assured.png) | ![Gradle](src/images/icons/Gradle.png) | ![Lombok](src/images/icons/Lombok.png) | ![JUnit5](src/images/icons/JUnit5.png) | ![Jenkins](src/images/icons/Jenkins.png) | ![Telegram](src/images/icons/Telegram.png) |
+| ![Java](images/icons/Java.png) | ![Rest-Assured](images/icons/Rest-Assured.png) | ![Gradle](images/icons/Gradle.png) | ![Lombok](images/icons/Lombok.png) | ![JUnit5](images/icons/JUnit5.png) | ![Jenkins](images/icons/Jenkins.png) | ![Telegram](images/icons/Telegram.png) |
 
 [comment]: <> (## Используемые технологии и инструменты)
 
@@ -48,34 +48,34 @@ gradle clean test
 
 ## Отчеты о прохождении тестов можно смотреть в Allure report
 
-![allure report](src/images/reports/AllureReport001.png)
+![allure report](images/reports/AllureReport001.png)
 
 ## Хранение документации организовано в Allure TestOps
 
 Click <a target="_blank" href="https://allure.autotests.cloud/project/948/dashboards">here</a> to see a list of automated test cases.
 
-![](src/images/reports/AllureTestOps001.png)
+![](images/reports/AllureTestOps001.png)
 
 Обзор тестовых запусков:
 
-![](src/images/reports/AllureTestOps002.png)
+![](images/reports/AllureTestOps002.png)
 
 ## Настроена интерграция с Jira
 
-![](src/images/reports/Jira001.png)
+![](images/reports/Jira001.png)
 
 ## Удаленный запуск тестов возможен через - Jenkins job
  
 Click <a target="_blank" href="https://jenkins.autotests.cloud/job/009-Vitalii-ReqresApi/">here</a> to do that.
 
-![](src/images/reports/Jenkins001.png)
+![](images/reports/Jenkins001.png)
 
 
 ## Оповещение о прохождении тестов приходит в Telegram bot
 
 Each test builds sent report into telegram bot
 
-![](src/images/reports/TelegramReport001.png)
+![](images/reports/TelegramReport001.png)
 
 
 
