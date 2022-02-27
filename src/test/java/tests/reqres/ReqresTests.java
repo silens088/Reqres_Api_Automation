@@ -6,13 +6,13 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Story;
 import io.restassured.RestAssured;
-import lombok_models.reqres.ForLogin.ForLoginRequest;
-import lombok_models.reqres.ForLogin.ForLoginResponse;
-import lombok_models.reqres.ForRegistration.ForRegistrationUserRequest;
-import lombok_models.reqres.ForRegistration.ForRegistrationUserResponse;
-import lombok_models.reqres.ForSingleResource.Response.SingleResourceMain;
-import lombok_models.reqres.ForUsers.ForUsersCreateRequest;
-import lombok_models.reqres.ForUsers.ForUsersCreateResponse;
+import models.login.ForLoginRequest;
+import models.login.ForLoginResponse;
+import models.registration.ForRegistrationUserRequest;
+import models.registration.ForRegistrationUserResponse;
+import models.singleResource.SingleResourceMain;
+import models.users.ForUsersCreateRequest;
+import models.users.ForUsersCreateResponse;
 import org.junit.jupiter.api.*;
 
 import java.util.HashMap;
@@ -27,13 +27,11 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-//lombok, restassured.specification, allure.restassured_filter
-
 @Owner("velichko")
 @Story("https://reqres.in")
 @Feature("https://reqres.in")
 
-public class ReqresTests_lombok extends ApiRequestSpecification {
+public class ReqresTests extends ApiRequestSpecification {
 
     @BeforeAll
     static void setUp() {
@@ -324,7 +322,7 @@ public class ReqresTests_lombok extends ApiRequestSpecification {
                     .statusCode(200)
                     //найти все емейлы - которые неважно с чего начинаются - но заканчивается reqres.in
                     //- он собирает весь список всех емейлов: findAll{it.email =~/.*?@reqres.in/}
-                    //- находит поле .email - flatten() ??? хз что это
+                    //- находит поле .email - flatten()
                     //далее в получившемся списке находим hasItem - наш емейл: eve.holt@reqres.in
                     .body("data.findAll{it.email =~/.*?@reqres.in/}.email.flatten()",
                             hasItem("eve.holt@reqres.in"));

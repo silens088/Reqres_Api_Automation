@@ -1,13 +1,12 @@
-package lombok_models.reqres.ForUsers;
+package models.registration;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ForUsersCreateResponse {
-    private String name;
-    private String job;
+public class ForRegistrationUserResponse {
     private String id;
-    private String createdAt;
+    private String token;
+    private String error;
 }

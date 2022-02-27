@@ -1,4 +1,4 @@
-package lombok_models.reqres.ForLogin;
+package models.login;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;

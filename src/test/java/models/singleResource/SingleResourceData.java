@@ -1,4 +1,4 @@
-package lombok_models.reqres.ForSingleResource.Response;
+package models.singleResource;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
