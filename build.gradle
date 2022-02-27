@@ -30,11 +30,8 @@ dependencies {
             "io.rest-assured:json-schema-validator:4.3.1",
             "io.qameta.allure:allure-rest-assured:$allureVersion",
             "org.assertj:assertj-guava:3.4.0",
-            //client
             'io.rest-assured:rest-assured:4.4.0',
-            //json
             "com.fasterxml.jackson.core:jackson-databind:2.11.2",
-            //JUnit
             "org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly(
             "org.slf4j:slf4j-simple:1.7.29",
@@ -46,7 +43,7 @@ tasks.withType(JavaCompile) {
 }
 
 tasks.withType(Test) {
-    systemProperties(System.getProperties()) //строчка которую добавили для запуска из консоли (25мин ур.11)
+    systemProperties(System.getProperties())
     useJUnitPlatform()
 
     testLogging {
