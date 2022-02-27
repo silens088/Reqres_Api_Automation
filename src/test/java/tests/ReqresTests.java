@@ -1,6 +1,6 @@
-package tests.reqres;
+package tests;
 
-import TestBase.Specification.ApiRequestSpecification;
+import Specification.spec.ApiRequestSpecification;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;

@@ -1,4 +1,4 @@
-package TestBase.Specification;
+package Specification.spec;
 
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
@@ -15,7 +15,6 @@ public class ApiRequestSpecification {
 
     public static RequestSpecification requestReqresSpec = with()
             .baseUri("https://reqres.in")
-            //.basePath("/api")
             .filter(customLogFilter().withCustomTemplates())
             .log().all()
             .contentType(ContentType.JSON);
