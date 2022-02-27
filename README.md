@@ -1,10 +1,9 @@
+![](src/images/main_logo.png)
 
-## API automation project for [reqres.in](https://reqres.in/)
-Project contains Api tests for https://reqres.in/ site.
-These are the tests which check these handlers' functionality.
+# API automation project для сайта [reqres.in](https://reqres.in/)
 
 
-## Technology used:
+## Технологический стек:
 
 | Java | Rest Assured | Gradle | Lombok | Junit5 | Jenkins | Telegram |
 |:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
@@ -47,33 +46,32 @@ Run locally - If you've downloaded these tests to your computer, run them with t
 gradle clean test
 ```
 
-## Смотри отчеты о прохождении тестов в Allure report
+## Отчеты о прохождении тестов можно смотреть в Allure report
 
 ![allure report](src/images/reports/AllureReport001.png)
 
-## Храни документацию в Allure TestOps
+## Хранение документации организовано в Allure TestOps
 
 Click <a target="_blank" href="https://allure.autotests.cloud/project/948/dashboards">here</a> to see a list of automated test cases.
 
 ![](src/images/reports/AllureTestOps001.png)
 
-Test launch overview:
+Обзор тестовых запусков:
 
 ![](src/images/reports/AllureTestOps002.png)
 
-## Интеграция с Jira
+## Настроена интерграция с Jira
 
 ![](src/images/reports/Jira001.png)
 
-## Запускай тесты удаленно через - Jenkins job!
-
-Jenkins is a tool from where you can run the tests. 
+## Удаленный запуск тестов возможен через - Jenkins job
+ 
 Click <a target="_blank" href="https://jenkins.autotests.cloud/job/009-Vitalii-ReqresApi/">here</a> to do that.
 
 ![](src/images/reports/Jenkins001.png)
 
 
-## Получай оповещение о прохождении тестов прямо в Telegram!
+## Оповещение о прохождении тестов приходит в Telegram bot
 
 Each test builds sent report into telegram bot
 
