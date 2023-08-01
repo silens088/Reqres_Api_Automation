@@ -1,6 +1,6 @@
 package tests;
 
-import Specification.spec.ApiRequestSpecification;
+import Specification.Specification;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Story("https://reqres.in")
 @Feature("https://reqres.in")
 
-public class ReqresTests extends ApiRequestSpecification {
+public class ReqresTests extends Specification {
 
     @BeforeAll
     static void setUp() {
@@ -42,7 +42,7 @@ public class ReqresTests extends ApiRequestSpecification {
     @Tag("POST")
     @DisplayName("Авторизация пользователя")
     void successfullLogin() {
-
+        Specification.InstallSpecification(Specification.requestSpec(baseURI), Specification.responseSpecOK200());
         ForLoginRequest forLogin = new ForLoginRequest(); //создали обьект модели lombok
         forLogin.setEmail("eve.holt@reqres.in");
         forLogin.setPassword("cityslicka");
@@ -50,12 +50,10 @@ public class ReqresTests extends ApiRequestSpecification {
         step("проверяем успешный логин", () -> {
             ForLoginResponse loginResponse =
                     given()
-                            .spec(requestReqresSpec)
                             .body(forLogin)
                             .when()
                             .post("/api/login")
                             .then()
-                            .statusCode(200)
                             .extract().as(ForLoginResponse.class);
 
             assertEquals("QpwL5tke4Pnpja7X4", loginResponse.getToken());
@@ -66,14 +64,13 @@ public class ReqresTests extends ApiRequestSpecification {
     @Tag("POST")
     @DisplayName("Проверяем ошибку, если пароль не введен")
     void unSuccessfullLogin() {
-
+        Specification.InstallSpecification(Specification.requestSpec(baseURI), Specification.responseSpecOK400());
         ForLoginRequest forLogin = new ForLoginRequest();
         forLogin.setEmail("eve.holt@reqres.in");
 
         step("Проверяем ошибку, что забыли ввести пароль", () -> {
             ForLoginResponse loginResponse =
                     given()
-                            .spec(requestReqresSpec)
                             .body(forLogin)
                             .when()
                             .post("/api/login")
@@ -89,7 +86,7 @@ public class ReqresTests extends ApiRequestSpecification {
     @Tag("POST")
     @DisplayName("Успешная регистрация пользователя")
     void successfulRegistrationUser() {
-
+        Specification.InstallSpecification(Specification.requestSpec(baseURI), Specification.responseSpecOK200());
         ForRegistrationUserRequest request = new ForRegistrationUserRequest();
         request.setEmail("eve.holt@reqres.in");
         request.setPassword("pistol");
@@ -97,12 +94,10 @@ public class ReqresTests extends ApiRequestSpecification {
         step("Регистрируем пользователя", () -> {
             ForRegistrationUserResponse response =
                     given()
-                            .spec(requestReqresSpec)
                             .body(request)
                             .when()
                             .post("/api/register")
-                            .then()
-                            .statusCode(200)
+                            .then().log().body()
                             .extract().as(ForRegistrationUserResponse.class);
 
             assertEquals("4", response.getId());
@@ -115,23 +110,19 @@ public class ReqresTests extends ApiRequestSpecification {
     @Description("В этом тесте мы не отправляем пароль и проверяем текст ответа")
     @DisplayName("Неуспешная регистрация пользователя")
     void usSuccessfulRegistrationUser() {
-
+        Specification.InstallSpecification(Specification.requestSpec(baseURI), Specification.responseSpecOK400());
         ForRegistrationUserRequest request = new ForRegistrationUserRequest();
         request.setEmail("eve.holt@reqres.in");
-
         String expectedError = "Missing password";
 
         step("Регистрируем пользователя", () -> {
             ForRegistrationUserResponse response =
                     given()
-                            .spec(requestReqresSpec)
                             .body(request)
                             .when()
                             .post("/api/register")
-                            .then()
-                            .statusCode(400)
+                            .then().log().body()
                             .extract().as(ForRegistrationUserResponse.class);
-
             assertEquals(expectedError, response.getError());
         });
     }
@@ -140,6 +131,7 @@ public class ReqresTests extends ApiRequestSpecification {
     @Tag("POST")
     @DisplayName("Cоздаем пользователя morpheus")
     void postCreateUser() {
+        Specification.InstallSpecification(Specification.requestSpec(baseURI), Specification.responseSpecOK201());
         ForUsersCreateRequest createRequest = new ForUsersCreateRequest();
         createRequest.setJob("leader");
         createRequest.setName("morpheus");
@@ -150,12 +142,10 @@ public class ReqresTests extends ApiRequestSpecification {
         step("Проверяем создание пользователя", () -> {
             ForUsersCreateResponse createResponse =
                     given()
-                            .spec(requestReqresSpec)
                             .body(createRequest)
                             .when()
                             .post("/api/users")
-                            .then()
-                            .statusCode(201)
+                            .then().log().body()
                             .extract().as(ForUsersCreateResponse.class);
 
             assertEquals(expectedName, createResponse.getName());
@@ -175,14 +165,12 @@ public class ReqresTests extends ApiRequestSpecification {
 
         Map<String, String> data = new HashMap<>();
         data.put("email", "eve.holt@tests.reqres.in");
-
+        Specification.InstallSpecification(Specification.requestSpec(baseURI), Specification.responseSpecOK400());
         given()
-                .spec(requestReqresSpec)
                 .body(data)
                 .when()
                 .post("/api/login")
-                .then()
-                .statusCode(400)
+                .then().log().body()
                 .body("error", is("Missing password"));
     }
 
@@ -191,17 +179,15 @@ public class ReqresTests extends ApiRequestSpecification {
     @DisplayName("Тест упал, неверный статус код")
     @Tag("POST")
     void negativeLoginNegative() {
-
+        Specification.InstallSpecification(Specification.requestSpec(baseURI), Specification.responseSpecOK201());
         Map<String, String> data = new HashMap<>();
         data.put("email", "eve.holt@tests.reqres.in");
 
         given()
-                .spec(requestReqresSpec)
                 .body(data)
                 .when()
                 .post("/api/login")
                 .then()
-                .statusCode(201)
                 .body("error", is("Missing password"));
     }
 
@@ -210,6 +196,7 @@ public class ReqresTests extends ApiRequestSpecification {
     @Description("Проверяем что полученные данные, соответствуют ожидаемым")
     @DisplayName("Получаем ресурсы, данные через GET")
     void singleResource() {
+        Specification.InstallSpecification(Specification.requestSpec(baseURI), Specification.responseSpecOK200());
 
         int expectedId = 2;
         String expectedName = "fuchsia rose";
@@ -222,12 +209,10 @@ public class ReqresTests extends ApiRequestSpecification {
         step("Проверяем получение ресурсов", () -> {
             SingleResourceMain singleResourceMain =
                     given()
-                            .spec(requestReqresSpec)
                             .when()
                             .get("/api/unknown/2")
                             .then()
                             .spec(responseSpecification)
-                            .statusCode(200)
                             .extract().as(SingleResourceMain.class);
 
             assertEquals(expectedId, singleResourceMain.getData().getId());
@@ -244,14 +229,12 @@ public class ReqresTests extends ApiRequestSpecification {
     @Tag("GET")
     @DisplayName("Проверяем содержимое поля support.text")
     void getSingleUsers() {
-        given()
-                .spec(requestReqresSpec);
+        Specification.InstallSpecification(Specification.requestSpec(baseURI), Specification.responseSpecOK200());
+        given();
         String response =
                 get("/api/users/2")
                         .then()
-                        .statusCode(200)
                         .extract().path("support.text");
-
         assertThat(response).isEqualTo("To keep ReqRes free, contributions towards server costs are appreciated!");
     }
 
@@ -259,12 +242,11 @@ public class ReqresTests extends ApiRequestSpecification {
     @Tag("GET")
     @DisplayName("Проверяем что пользователь не найден")
     void singleUserNotFoundTest() {
+        Specification.InstallSpecification(Specification.requestSpec(baseURI), Specification.responseSpecOK404());
         given()
-                .spec(requestReqresSpec)
                 .when()
                 .get("/api/users/23")
                 .then()
-                .statusCode(404)
                 .body(is("{}"));
     }
 
@@ -272,32 +254,27 @@ public class ReqresTests extends ApiRequestSpecification {
     @Tag("GET")
     @DisplayName("Проверяем кол-во страниц и номер текущей страницы")
     void getListUsers() {
+        Specification.InstallSpecification(Specification.requestSpec(baseURI), Specification.responseSpecOK200());
         given()
-                .spec(requestReqresSpec)
                 .when()
                 .get("/api/users?page=2")
-                .then()
-                .spec(responseSpecification)
+                .then().log().body()
                 .body("page", is(2))
-                .body("total_pages", is(2))
-                .assertThat()
-                .statusCode(200);
+                .body("total_pages", is(2));
     }
 
     //тест позволяет с помощью регекса, найти и проверить конкретные данные в ответе:
     @Test
     @Tag("GET")
-    @Description( "Экспериментальный тест с Groovy + regex")
+    @Description("Экспериментальный тест с Groovy + regex")
     @DisplayName("Ищем все имена содержащие ue")
     public void checkNameInListResource() {
+        Specification.InstallSpecification(Specification.requestSpec(baseURI), Specification.responseSpecOK200());
         step("Проверяем что LIST <RESOURCE> содержит в середине имени ue  ", () -> {
             given()
-                    .spec(requestReqresSpec)
                     .when()
                     .get("/api/unknown")
-                    .then()
-                    .log().all()
-                    .statusCode(200)
+                    .then().log().all()
                     .body("data.findAll{it.name =~/ue/}.name.flatten()", //ищем имена
                             hasItems("true red", "blue turquoise"))
                     .and()
@@ -312,14 +289,12 @@ public class ReqresTests extends ApiRequestSpecification {
     @Description("Экспериментальный тест с Groovy + regex")
     @DisplayName("Ищем все email оканчивающиеся на @reqres.in и проверяем наличие в списке eve.holt@reqres.in")
     public void checkNameInListResource2() {
+        Specification.InstallSpecification(Specification.requestSpec(baseURI), Specification.responseSpecOK200());
         step("Проверяем что LIST USERS стр1 - содержит емейл eve.holt@reqres.in", () -> {
             given()
-                    .spec(requestReqresSpec)
                     .when()
                     .get("/api/users?page=1")
-                    .then()
-                    .log().all()
-                    .statusCode(200)
+                    .then().log().all()
                     //найти все емейлы - которые неважно с чего начинаются - но заканчивается reqres.in
                     //- он собирает весь список всех емейлов: findAll{it.email =~/.*?@reqres.in/}
                     //- находит поле .email - flatten()
